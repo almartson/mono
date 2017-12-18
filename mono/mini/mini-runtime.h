@@ -177,6 +177,7 @@ typedef struct MonoDebugOptions {
 	gboolean dyn_runtime_invoke;
 	gboolean gdb;
 	gboolean lldb;
+	gboolean unity_mixed_callstack;
 
 	/*
 	 * With LLVM codegen, this option will cause methods to be called indirectly through the
