@@ -75,6 +75,8 @@ typedef unsigned __int64	uint64_t;
 
 #define MONO_API MONO_EXTERN_C MONO_API_NO_EXTERN_C
 
+#define UNITY_MONO_API MONO_API
+
 // extern "C" extern int c; // warning: duplicate 'extern' declaration specifier [-Wduplicate-decl-specifier]
 //
 // Therefore, remove extern on functions as always meaningless/redundant,

@@ -860,7 +860,7 @@ mono_method_signature_internal_slow (MonoMethod *m);
  *
  * Return the signature of the method M. On failure, returns NULL, and ERR is set.
  */
-static inline MonoMethodSignature*
+UNITY_MONO_API inline MonoMethodSignature*
 mono_method_signature_checked (MonoMethod *m, MonoError *error)
 {
 	error_init (error);
@@ -1139,7 +1139,7 @@ mono_class_get_exception_for_failure (MonoClass *klass);
 char*
 mono_identifier_escape_type_name_chars (const char* identifier);
 
-char*
+UNITY_MONO_API char*
 mono_type_get_name_full (MonoType *type, MonoTypeNameFormat format);
 
 char*

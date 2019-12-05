@@ -1014,6 +1014,27 @@ mono_domain_foreach (MonoDomainFunc func, gpointer user_data)
 	MONO_EXIT_GC_UNSAFE;
 }
 
+MONO_API void
+mono_domain_assembly_foreach (MonoDomain* domain, MonoDomainFunc func, void* user_data)
+{
+	MonoAssembly* assembly;
+	GSList *iter;
+
+	/* Skipping internal assembly builders created by remoting,
+	   as it is done in ves_icall_System_AppDomain_GetAssemblies
+	*/
+	mono_domain_assemblies_lock(domain);
+	for (iter = domain->domain_assemblies; iter; iter = iter->next) 
+	{
+		assembly = (MonoAssembly *)iter->data;
+		if (assembly->corlib_internal)
+			continue;
+
+		func(assembly, user_data);
+	}
+	mono_domain_assemblies_unlock(domain);
+}
+
 /* FIXME: maybe we should integrate this with mono_assembly_open? */
 /**
  * mono_domain_assembly_open:
