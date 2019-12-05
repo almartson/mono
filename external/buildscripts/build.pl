@@ -1369,7 +1369,7 @@ if ($build)
 
 		if ($mcsOnly)
 		{
-			print("\n>>> Calling make in mcs\n");
+			print("\n>>> Calling make in mcs with $jobs jobs\n");
 			chdir("$monoroot/mcs");
 			my @makeCommand = (@commandPrefix, ('make', "-j$jobs"));
 			if($mcs ne '')
@@ -1381,7 +1381,7 @@ if ($build)
 		}
 		else
 		{
-			print("\n>>> Calling make\n");
+			print("\n>>> Calling make with $jobs jobs\n");
 			my @makeCommand = (@commandPrefix, ('make', "-j$jobs"));
 			if($mcs ne '')
 			{
@@ -1436,6 +1436,11 @@ if ($build)
 		#push @additionalProfiles, "unityaot";
 
 		chdir("$monoroot/mcs");
+
+		system("make", "-j$jobs", "SKIP_AOT=1", "HOST_PLATFORM=win32") eq 0 or die ("Failed to make $profileName profile in mcs\n");
+		system("make", "-j$jobs", "SKIP_AOT=1", "HOST_PLATFORM=macos") eq 0 or die ("Failed to make $profileName profile in mcs\n");
+		system("make", "-j$jobs", "SKIP_AOT=1", "HOST_PLATFORM=linux") eq 0 or die ("Failed to make $profileName profile in mcs\n");
+
 		foreach my $profileName(@additionalProfiles)
 		{
 			print(">>> Making profile : $profileName\n");
