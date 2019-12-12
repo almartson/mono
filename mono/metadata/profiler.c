@@ -140,6 +140,7 @@ load_profiler_from_installation (const char *libname, const char *name, const ch
  * This function may \b only be called by embedders prior to running managed
  * code.
  */
+#ifndef RUNTIME_IL2CPP
 void
 mono_profiler_load (const char *desc)
 {
@@ -178,6 +179,7 @@ done:
 	g_free (mname);
 	g_free (libname);
 }
+#endif
 
 /**
  * mono_profiler_create:
@@ -249,6 +251,7 @@ mono_profiler_set_cleanup_callback (MonoProfilerHandle handle, MonoProfilerClean
  * This function may \b only be called from a profiler's init function or prior
  * to running managed code.
  */
+#ifndef RUNTIME_IL2CPP
 mono_bool
 mono_profiler_enable_coverage (void)
 {
@@ -263,6 +266,7 @@ mono_profiler_enable_coverage (void)
 
 	return mono_profiler_state.code_coverage = TRUE;
 }
+#endif
 
 /**
  * mono_profiler_set_coverage_filter_callback:
@@ -310,6 +314,7 @@ coverage_unlock (void)
  *
  * This function is \b not async safe.
  */
+#ifndef RUNTIME_IL2CPP
 mono_bool
 mono_profiler_get_coverage_data (MonoProfilerHandle handle, MonoMethod *method, MonoProfilerCoverageCallback cb)
 {
@@ -408,6 +413,7 @@ mono_profiler_get_coverage_data (MonoProfilerHandle handle, MonoMethod *method, 
 
 	return TRUE;
 }
+#endif
 
 gboolean
 mono_profiler_coverage_instrumentation_enabled (MonoMethod *method)

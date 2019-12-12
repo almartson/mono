@@ -2853,7 +2853,7 @@ ves_icall_System_AppDomain_InternalUnload (gint32 domain_id, MonoError *error)
 		return;
 
 	MonoException *exc = NULL;
-	mono_domain_try_unload (domain, (MonoObject**)&exc);
+	mono_domain_try_unload (domain, (MonoObject**)&exc, NULL);
 	if (exc)
 		mono_error_set_exception_instance (error, exc);
 }
@@ -3207,7 +3207,7 @@ mono_domain_unload (MonoDomain *domain)
 {
 	MONO_ENTER_GC_UNSAFE;
 	MonoObject *exc = NULL;
-	mono_domain_try_unload (domain, &exc);
+	mono_domain_try_unload (domain, &exc, NULL);
 	MONO_EXIT_GC_UNSAFE;
 }
 
@@ -3224,7 +3224,7 @@ guarded_wait (MonoThreadHandle *thread_handle, guint32 timeout, gboolean alertab
 }
 
 /**
- * mono_domain_unload:
+ * mono_domain_try_unload:
  * \param domain The domain to unload
  * \param exc Exception information
  *
@@ -3243,7 +3243,7 @@ guarded_wait (MonoThreadHandle *thread_handle, guint32 timeout, gboolean alertab
  *  process could end up trying to abort the current thread.
  */
 void
-mono_domain_try_unload (MonoDomain *domain, MonoObject **exc)
+mono_domain_try_unload (MonoDomain *domain, MonoObject **exc, MonoUnityExceptionFunc callback)
 {
 	HANDLE_FUNCTION_ENTER ();
 	ERROR_DECL (error);
@@ -3290,10 +3290,14 @@ mono_domain_try_unload (MonoDomain *domain, MonoObject **exc)
 	}
 
 	if (*exc) {
-		/* Roll back the state change */
-		domain->state = MONO_APPDOMAIN_CREATED;
-		mono_domain_set_fast (caller_domain, FALSE);
-		goto exit;
+		if (callback != NULL)
+			callback (*exc);
+		else {
+			/* Roll back the state change */
+			domain->state = MONO_APPDOMAIN_CREATED;
+			mono_domain_set_internal_with_options (caller_domain, TRUE);
+			goto exit;
+		}
 	}
 	mono_domain_set_fast (caller_domain, FALSE);
 

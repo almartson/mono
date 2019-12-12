@@ -5129,6 +5129,7 @@ mono_metadata_localscope_from_methoddef (MonoImage *meta, guint32 index)
 static void
 mono_backtrace (int limit)
 {
+#ifndef _MSC_VER
 	void *array[limit];
 	char **names;
 	int i;
@@ -5138,6 +5139,7 @@ mono_backtrace (int limit)
 		g_print ("\t%s\n", names [i]);
 	}
 	g_free (names);
+#endif
 }
 #endif
 

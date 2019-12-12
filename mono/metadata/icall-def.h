@@ -427,6 +427,7 @@ NOHANDLES(ICALL(MONOIO_15, "MoveFile(char*,char*,System.IO.MonoIOError&)", ves_i
 #endif /* !PLATFORM_RO_FS */
 NOHANDLES(ICALL(MONOIO_16, "Open(char*,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.IO.FileOptions,System.IO.MonoIOError&)", ves_icall_System_IO_MonoIO_Open))
 HANDLES(MONOIO_17, "Read(intptr,byte[],int,int,System.IO.MonoIOError&)", ves_icall_System_IO_MonoIO_Read, gint32, 5, (gpointer, MonoArray, gint32, gint32, gint32_ref))
+NOHANDLES(ICALL(MONOIO_40, "RemapPath(string,string&)", ves_icall_System_IO_MonoIO_RemapPath))
 #ifndef PLATFORM_RO_FS
 NOHANDLES(ICALL(MONOIO_18, "RemoveDirectory(char*,System.IO.MonoIOError&)", ves_icall_System_IO_MonoIO_RemoveDirectory))
 NOHANDLES(ICALL(MONOIO_18M, "ReplaceFile(char*,char*,char*,bool,System.IO.MonoIOError&)", ves_icall_System_IO_MonoIO_ReplaceFile))
@@ -547,6 +548,7 @@ HANDLES(SOCK_6b, "Duplicate_internal", ves_icall_System_Net_Sockets_Socket_Dupli
 HANDLES(SOCK_7, "GetSocketOption_arr_internal(intptr,System.Net.Sockets.SocketOptionLevel,System.Net.Sockets.SocketOptionName,byte[]&,int&)", ves_icall_System_Net_Sockets_Socket_GetSocketOption_arr_internal, void, 5, (gsize, gint32, gint32, MonoArray, gint32_ref))
 HANDLES(SOCK_8, "GetSocketOption_obj_internal(intptr,System.Net.Sockets.SocketOptionLevel,System.Net.Sockets.SocketOptionName,object&,int&)", ves_icall_System_Net_Sockets_Socket_GetSocketOption_obj_internal, void, 5, (gsize, gint32, gint32, MonoObjectOut, gint32_ref))
 HANDLES(SOCK_21, "IOControl_internal(intptr,int,byte[],byte[],int&)", ves_icall_System_Net_Sockets_Socket_IOControl_internal, int, 5, (gsize, gint32, MonoArray, MonoArray, gint32_ref))
+ICALL(SOCK_22, "IsProtocolSupported_internal", ves_icall_System_Net_Sockets_Socket_IsProtocolSupported_internal)
 HANDLES(SOCK_9, "Listen_internal(intptr,int,int&)", ves_icall_System_Net_Sockets_Socket_Listen_internal, void, 3, (gsize, guint32, gint32_ref))
 HANDLES(SOCK_10, "LocalEndPoint_internal(intptr,int,int&)", ves_icall_System_Net_Sockets_Socket_LocalEndPoint_internal, MonoObject, 3, (gsize, gint32, gint32_ref))
 HANDLES(SOCK_11, "Poll_internal", ves_icall_System_Net_Sockets_Socket_Poll_internal, MonoBoolean, 4, (gsize, int, int, gint32_ref))
@@ -774,8 +776,8 @@ NOHANDLES(ICALL(MARSHAL_11, "GetLastWin32Error", ves_icall_System_Runtime_Intero
 HANDLES(MARSHAL_53, "GetNativeActivationFactory", ves_icall_System_Runtime_InteropServices_Marshal_GetNativeActivationFactory, MonoObject, 1, (MonoObject))
 HANDLES(MARSHAL_47, "GetObjectForCCW", ves_icall_System_Runtime_InteropServices_Marshal_GetObjectForCCW, MonoObject, 1, (gpointer))
 HANDLES(MARSHAL_54, "GetRawIUnknownForComObjectNoAddRef", ves_icall_System_Runtime_InteropServices_Marshal_GetRawIUnknownForComObjectNoAddRef, gpointer, 1, (MonoObject))
-HANDLES(MARSHAL_48, "IsComObject", ves_icall_System_Runtime_InteropServices_Marshal_IsComObject, MonoBoolean, 1, (MonoObject))
 #endif
+HANDLES(MARSHAL_48, "IsComObject", ves_icall_System_Runtime_InteropServices_Marshal_IsComObject, MonoBoolean, 1, (MonoObject))
 HANDLES(MARSHAL_48a, "IsPinnableType", ves_icall_System_Runtime_InteropServices_Marshal_IsPinnableType, MonoBoolean, 1, (MonoReflectionType))
 HANDLES(MARSHAL_12, "OffsetOf", ves_icall_System_Runtime_InteropServices_Marshal_OffsetOf, int, 2, (MonoReflectionType, MonoString))
 HANDLES(MARSHAL_13, "Prelink", ves_icall_System_Runtime_InteropServices_Marshal_Prelink, void, 1, (MonoReflectionMethod))
@@ -842,6 +844,9 @@ ICALL_TYPE(REMSER, "System.Runtime.Remoting.RemotingServices", REMSER_0)
 HANDLES(REMSER_0, "GetVirtualMethod", ves_icall_Remoting_RemotingServices_GetVirtualMethod, MonoReflectionMethod, 2, (MonoReflectionType, MonoReflectionMethod))
 HANDLES(REMSER_1, "InternalExecute", ves_icall_InternalExecute, MonoObject, 4, (MonoReflectionMethod, MonoObject, MonoArray, MonoArrayOut))
 HANDLES(REMSER_2, "IsTransparentProxy", ves_icall_IsTransparentProxy, MonoBoolean, 1, (MonoObject))
+#else
+ICALL_TYPE(REMSER, "System.Runtime.Remoting.RemotingServices", REMSER_0)
+ICALL(REMSER_0, "IsTransparentProxy", ves_icall_IsTransparentProxy)
 #endif
 
 ICALL_TYPE(RUNIMPORT, "System.Runtime.RuntimeImports", RUNIMPORT_1)

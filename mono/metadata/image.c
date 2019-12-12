@@ -46,6 +46,7 @@
 #include <mono/metadata/image-internals.h>
 #include <mono/metadata/loaded-images-internals.h>
 #include <mono/metadata/w32process-internals.h>
+#include <mono/metadata/unity-utils.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
